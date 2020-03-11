@@ -1,0 +1,56 @@
+//TH-Header
+//*****************************************************************************************
+// Copyright (c)  2006-2020  Todd Forsberg
+// All rights reserved.
+//
+// $FileName    : GitHub\DataFlex-IO\DFD-Library\AppSrc\base\cDFD_Object.pkg
+// $ProjectName : DataFlex Developer Library
+// $Authors     : Todd Forsberg
+// $Created     : July 10, 2017
+//
+// Contents: A generic base class for building other classes upon
+//
+//*****************************************************************************************
+//TH-RevisionStart
+//TH-RevisionEnd
+//*****************************************************************************************
+
+//Use mixin\cDFD_ClassNameArray_Mixin.pkg
+//Use mixin\cDFD_RegisterPropertyHandle_Mixin.pkg
+
+Class cDFD_Object Is A cObject
+
+//    Import_Class_Protocol cDFD_ClassNameArray_Mixin
+//    Import_Class_Protocol cDFD_RegisterPropertyHandle_Mixin
+
+    Procedure Construct_Object
+        Forward Send Construct_Object
+
+//        Send Define_DFD_ClassNameArray_Mixin
+//        Send Define_DFD_RegisterPropertyHandle_Mixin
+
+//        Send AddClassName "cObject"  //add base classname
+//        Send AddClassName "!$"  //add this classname
+
+        // Define new Properties:
+
+        // Create child objects:
+
+        // Set property values:
+
+    End_Procedure
+
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+//        Send End_Define_DFD_ClassNameArray_Mixin
+        // Add your code that needs to be executed at the end of the object construction here:
+
+    End_Procedure
+
+    // Create and augment procedures and functions
+
+End_Class
+
+//==============================//
+// End of File: cDFD_Object.pkg //
+//==============================//

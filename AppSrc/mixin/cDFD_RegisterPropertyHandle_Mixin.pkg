@@ -1,0 +1,74 @@
+//TH-Header
+//*****************************************************************************************
+// Copyright (c)  2006-2020  Todd Forsberg
+// All rights reserved.
+//
+// https://github.com/DataFlex-IO/DFD-Library/blob/master/AppSrc/mixin/cDFD_RegisterPropertyHandle_Mixin.pkg
+//
+// $FileName    : AppSrc\mixin\cDFD_RegisterPropertyHandle_Mixin.pkg
+// $ProjectName : DataFlex Developer Library (https://github.com/DataFlex-IO/DFD-Library)
+// $Authors     :
+// $Created     : 06.24.2006  16:41
+//
+// Contents:
+//
+//*****************************************************************************************
+//TH-RevisionStart
+//TH-RevisionEnd
+//*****************************************************************************************
+
+Use VdfBase.pkg
+
+{ ClassType=Mixin }
+Class cDFD_RegisterPropertyHandle_Mixin is a Mixin
+
+    // Construct_Mixin: Mixin constructor.
+    Procedure Define_DFD_RegisterPropertyHandle_Mixin
+        //Insert your Properties here.
+        
+        { Visibility=Private }
+        Property Handle Private_phmRegisterPropertyHandle
+        
+        // Create child objects
+        
+        // Set property values:
+        //VDFD_Showln "Define_VDFD_RegisterPropertyHandle_Mixin for: " (Name(Self))
+    End_Procedure
+
+    // Finish mixin construction
+    //Procedure End_Define_VDFD_RegisterPropertyHandle_Mixin
+    //  Forward Send End_Construct_Object
+    //End_Procedure
+
+    Procedure Destroy_Object
+        Handle hProp
+        Get Private_phmRegisterPropertyHandle to hProp
+        If (hProp) Begin
+            Delegate Set hProp to 0
+        End
+        Forward Send Destroy_Object
+    End_Procedure
+  
+    Procedure Destroy
+        Handle hProp
+        Get Private_phmRegisterPropertyHandle to hProp
+        If (hProp) Begin
+            Delegate Set hProp to 0
+        End
+        Forward Send Destroy
+    End_Procedure
+  
+    Procedure Set phmRegisterPropertyHandle Handle hProp
+        Handle hSelf
+        Set Private_phmRegisterPropertyHandle to hProp
+        If (hProp) Begin
+            Move Self to hSelf
+            Delegate Set hProp to hSelf
+        End
+    End_Procedure
+
+End_Class
+
+//*****************************************************************************************
+// End of File: cDFD_RegisterPropertyHandle_Mixin.pkg
+//*****************************************************************************************

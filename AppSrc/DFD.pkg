@@ -1,0 +1,40 @@
+// Data Access
+Use DFAllEnt.pkg
+
+// DFD Base Library Classes
+Use base\cDFD_Object.pkg
+
+//Use base\cDFD_Array.pkg
+// ToDo: Use base\cDFD_Button.pkg
+//Use base\cDFD_ClientArea.pkg
+//Use base\cDFD_ImageList32.pkg
+//Use base\cDFD_DbForm.pkg
+//Use base\cDFD_DbModalPanel.pkg
+//Use base\cDFD_DbRadioGroup.pkg
+//Use base\cDFD_Form.pkg
+//Use base\cDFD_Group.pkg
+//Use base\cDFD_ModalPanel.pkg
+//Use base\cDFD_Radio.pkg
+//Use base\cDFD_RadioGroup.pkg
+//Use base\cDFD_View.pkg
+//Use base\cDFD_Panel.pkg
+//Use base\cDFD_Application.pkg
+//Use base\cDFD_Timer.pkg
+//Use base\cDFD_Set.pkg
+//Use base\cDFD_Checkbox.pkg
+//Use base\cDFD_BusinessProcess.pkg
+//Use base\cDFD_DbCheckbox.pkg
+//Use base\cDFD_DbTabDialog.pkg
+//Use base\cDFD_DbView.pkg
+//Use base\cDFD_DfTimer.pkg
+//Use base\cDFD_TreeView.pkg
+//Use base\cDFD_TextEdit.pkg
+//Use base\cDFD_DfTimer.pkg
+//Use base\cDFD_DbTextEdit.pkg
+
+
+// Obsolete Classes //
+//Use base\cDFD_Grid.pkg
+//Use base\cDFD_List.pkg
+//Use base\cDFD_DbGrid.pkg
+//Use base\cDFD_DbList.pkg
