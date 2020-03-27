@@ -1,0 +1,243 @@
+
+//***************************************************************************
+//*
+//* Class:        cDFD_Set
+//* Package Name: cDFD_Set.pkg
+//*
+//***************************************************************************
+
+Use Set.pkg
+Use Flexml.pkg
+
+//Use VDFD_Commands.pkg
+
+Class cDFD_Set is a Set
+
+    // Construct_Object: Object constructor.
+    Procedure Construct_Object
+        Forward Send Construct_Object
+
+        // Define new Properties:
+        Property Boolean pbTrimElements    True
+        Property Boolean pbNoBlanksAllowed True
+        Property Boolean pbIgnoreCase      False // not implemented yet.
+
+        //TODO: peStoreAs
+        Property Boolean peStoreAs // normal, uppercase, lowercase
+
+        // Create child objects:
+
+        // Set property values:
+
+    End_Procedure
+
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+        String sName
+        Get Object_Label to sName
+        If (sName = "OOBJECT") Begin
+            Set Name to "oDFD_Set"
+        End
+
+        // Add your code that needs to be executed at the end of the object construction here:
+
+    End_Procedure
+
+    // Create and augment procedures and functions
+    Procedure Add_Element String sVal Returns Integer
+        If (pbTrimElements(Self)) Begin
+            Move (Trim(sVal)) to sVal
+        End
+        If (pbNoBlanksAllowed(Self)) Begin
+            If (sVal="") Begin
+                Procedure_Return
+            End
+        End
+
+        If (pbIgnoreCase(Self)) Begin
+            //TODO: Add ignore case
+        End
+
+        Forward Send Add_Element sVal
+    End_Procedure
+
+    Procedure Add_Elements String Str1 String Str2 String Str3 String Str4 String Str5 ;
+                           String Str6 String Str7 String Str8 String Str9 String Str10 ;
+                           Returns Integer
+
+        If (num_arguments >=  1) Begin
+            Send Add_Element Str1
+        End
+        If (num_arguments >=  2) Begin
+            Send Add_Element Str2
+        End
+        If (num_arguments >=  3) Begin
+            Send Add_Element Str3
+        End
+        If (num_arguments >=  4) Begin
+            Send Add_Element Str4
+        End
+        If (num_arguments >=  5) Begin
+            Send Add_Element Str5
+        End
+        If (num_arguments >=  6) Begin
+            Send Add_Element Str6
+        End
+        If (num_arguments >=  7) Begin
+            Send Add_Element Str7
+        End
+        If (num_arguments >=  8) Begin
+            Send Add_Element Str8
+        End
+        If (num_arguments >=  9) Begin
+            Send Add_Element Str9
+        End
+        If (num_arguments >= 10) Begin
+            Send Add_Element Str10
+        End
+    End_Procedure
+
+    Procedure OnEachItem Integer iItem String sValue
+    End_Procedure
+
+    // Create and augment procedure and functions
+    Procedure DoForEachItem Handle hMessage Handle hObject
+        Integer iLoop iCount
+        String sValue
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Get Value iLoop to sValue
+            If hMessage Begin
+                Send hMessage of hObject iLoop sValue
+            End
+            Send OnEachItem iLoop sValue
+        Loop
+    End_Procedure
+
+    Procedure CopyContents Handle hDestination
+        Integer iLoop iCount
+        Send delete_data of hDestination
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Send add_element of hDestination (value(Self, iLoop))
+        Loop
+    End_Procedure
+
+    Procedure DisplayItem Integer iItem String sVal
+        Showln "Item: " iItem " = [" sVal "]"
+    End_Procedure
+
+    Procedure DisplayContents
+        Send DoForEachItem MSG_DisplayItem Self
+    End_Procedure
+
+    Function SetAsIntegerArray Returns Integer[]
+        Integer[] IntArray
+        Integer iLoop iCount
+        String sRetVal sValue
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Get Value iLoop to sValue
+            Move sValue to IntArray[iLoop]
+        Loop
+        Function_Return IntArray
+    End_Procedure
+
+    Function SetAsString String sDelimiter Returns String
+        Integer iLoop iCount
+        String sRetVal sValue
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Get Value iLoop to sValue
+            Append sRetVal sValue
+            If (iLoop <> (iCount-1)) Begin
+                Append sRetVal sDelimiter
+            End
+        Loop
+        Function_Return sRetVal
+    End_Procedure
+
+    Function SetAsStringWithMax String sDelimiter Integer iMax Returns String
+        Integer iLoop iCount
+        String sRetVal sValue
+        Get Item_Count to iCount
+        For iLoop from 0 to ((iCount-1) min (iMax-1))
+            Get Value iLoop to sValue
+            Append sRetVal sValue
+            If (iLoop <> (iCount-1)) Begin
+                Append sRetVal sDelimiter
+            End
+        Loop
+        Function_Return sRetVal
+    End_Procedure
+
+    Function SetAsQuotedStrings String sDelimiter Returns String
+        Integer iLoop iCount
+        String sRetVal sValue
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Get Value iLoop to sValue
+            Append sRetVal "'" sValue "'"
+            If (iLoop <> (iCount-1)) Begin
+                Append sRetVal sDelimiter
+            End
+        Loop
+        Function_Return sRetVal
+    End_Procedure
+
+    Function SetAsStringOfIntegers String sDelimiter Returns String
+        Integer iLoop iCount iValue
+        String sRetVal
+
+        Get Item_Count to iCount
+        For iLoop from 0 to (iCount-1)
+            Get Value iLoop to iValue
+            Append sRetVal iValue
+            If (iLoop <> (iCount-1)) Begin
+                Append sRetVal sDelimiter
+            End
+        Loop
+        Function_Return sRetVal
+    End_Procedure
+
+    Procedure Set SetFromString String sDelimiter String sValue
+    //TODO: Add code to populate a set from delimited string values
+    End_Procedure
+
+    Procedure AddItemToXML Handle hRoot String sValue
+        Handle hItem
+        Get AddElement of hRoot "Value" sValue to hItem
+    End_Procedure
+
+    Procedure SaveToXML String sFile
+        Handle hXML hRoot
+        Boolean bOk
+        Integer iLoop iCount iVoid
+        String sRetVal sValue
+
+        Get Create (RefClass(cXMLDOMDocument))  to hXML
+        Get CreateDocumentElement of hXML "Root" to hRoot
+        Get Item_Count to iCount
+
+        // Build XML in memory
+        For iLoop from 0 to (iCount-1)
+          Get Value iLoop to sValue
+          Send AddItemToXML hRoot sValue
+        Loop
+
+        // Save to disk
+        Set psDocumentName of hXML to sFile
+        Get SaveXMLDocument of hXML to iVoid
+        Send Destroy of hRoot
+        Send Destroy of hXML
+
+        Function_Return sRetVal
+    End_Procedure
+
+    //TODO: LoadFromXML
+    Procedure LoadFromXML
+    End_Procedure
+
+End_Class
+
+// End of File: cDFD_Set.pkg

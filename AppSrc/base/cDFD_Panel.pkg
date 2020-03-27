@@ -1,0 +1,92 @@
+#IFNDEF U_cDFD_Panel
+// Top of File: cDFD_Panel.pkg
+
+Use Dfpanel.pkg
+Use cVDFD_RoundingMethods_Mixin.pkg
+
+Class cDFD_Panel is a Panel
+
+    Import_Class_Protocol cVDFD_RoundingMethods_Mixin
+
+    // Construct_Object: Object constructor.
+    Procedure Construct_object
+        Forward Send Construct_Object
+
+        // Mixin Classes
+        Send Define_VDFD_RoundingMethods_Mixin
+
+        // Define new Properties: Property {Type} {pxName} {initial_value}
+        Property Handle phoDockingManager
+
+        // Create child objects
+
+        // Set property values:
+
+    End_Procedure
+
+    // Create and augment procedure and functions
+    Procedure Minimize
+        Boolean bResult
+        Handle hWnd
+        Get Window_Handle to hWnd
+        Move (ShowWindow(hWnd,SW_MINIMIZE)) to bResult
+    End_Procedure
+
+    Procedure Hide
+        Boolean bResult
+        Handle hWnd
+        Get Window_Handle to hWnd
+        Move (ShowWindow(hWnd,SW_HIDE)) to bResult
+    End_Procedure
+
+    Procedure Maximize
+        Boolean bResult
+        Handle hWnd
+        Get Window_Handle to hWnd
+        Move (ShowWindow(hWnd,SW_MAXIMIZE)) to bResult
+    End_Procedure
+
+    Procedure ShowMaximized
+        Boolean bResult
+        Handle hWnd
+        Get Window_Handle to hWnd
+        Move (ShowWindow(hWnd,SW_SHOWMAXIMIZED)) to bResult
+    End_Procedure
+
+    Function psCallStackDump Returns String
+        String sCS
+        CallStackDump sCS
+        Function_Return sCS
+    End_Function
+
+    Procedure Codemast_Add String sType String sCode String sDesc
+        Integer iMode
+        
+        Clear CODEMAST
+        Move sType to CODEMAST.TYPE
+        Move sCode to CODEMAST.CODE
+        Find EQ CODEMAST by Index.1
+        If (not(Found)) Begin
+            Move sDesc to CODEMAST.DESCRIPTION
+            Get_Attribute DF_FILE_MODE of CODEMAST.File_Number to iMode
+            Set_Attribute DF_FILE_MODE of CODEMAST.File_Number to DF_FILEMODE_DEFAULT
+            SaveRecord CODEMAST
+            Set_Attribute DF_FILE_MODE of CODEMAST.File_Number to iMode
+        End
+    End_Procedure
+
+End_Class
+
+Procedure ChildObjectRegister for cObject Handle[] ByRef hCollection
+    Move Self to hCollection[SizeOfArray(hCollection)]
+End_Procedure
+ 
+Function ChildObjects for cObject Boolean bRecursive Returns Handle[]
+    Handle[] hCollection
+    If (bRecursive) Broadcast Recursive Send ChildObjectRegister (&hCollection)
+    Else Broadcast Send ChildObjectRegister (&hCollection)
+    Function_Return hCollection
+End_Function
+
+// End of File: cDFD_Panel.pkg
+#ENDIF

@@ -1,0 +1,22 @@
+
+// DAW Classes
+Use brdcster.pkg
+
+// DFD Classes
+Use base\cDFD_Set.pkg
+
+Class cDFD_Broadcaster is a cDFD_Set 0 0 Broadcast_Handler
+
+    Procedure Construct_Object
+        Forward Send Construct_Object
+
+    End_Procedure
+
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+
+    End_Procedure
+
+End_Class
+
+// End of File: cDFD_Broadcaster.pkg

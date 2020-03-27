@@ -1,0 +1,8 @@
+// Top of File: cDFD_Collection.pkg
+
+Use cCollection.pkg
+
+Class cDFD_Collection is a cCollection
+End_Class
+
+// End of File: cDFD_Collection.pkg
